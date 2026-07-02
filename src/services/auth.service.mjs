@@ -4,7 +4,8 @@ import {
   registerUserRepository,
 } from "../repositories/auth.repository.mjs";
 import { ApiError } from "../utils/ApiError.mjs";
-import { hashPassword } from "../utils/hash.mjs";
+import { hashPassword } from "../utils/hash.util.mjs";
+import { signToken } from "../utils/jwt.util.mjs";
 import { schema } from "../validators/auth.validator";
 
 const registerUserService = async (user) => {
@@ -35,3 +36,22 @@ const registerUserService = async (user) => {
     throw new ApiError(500, err.message);
   }
 };
+
+const logInUserService = async (user) => {
+  try {
+    const dbUser = await findByEmail(user.email);
+
+    if (!dbUser) {
+      throw new ApiError(404, "user not found");
+    }
+
+    const token = signToken({ _id: dbUser._id });
+
+    return token;
+  } catch (error) {
+    console.log(error);
+    throw new ApiError(500, error.message);
+  }
+};
+
+export { logInUserService };
