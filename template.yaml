@@ -6,6 +6,18 @@ Description: >
   Sample SAM Template for 02-sam-jwt-auth-api
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+
+Parameters:
+  MongoDBUri:
+    Type: String
+    NoEcho: true          # hides value in console/logs
+  JwtSecret:
+    Type: String
+    NoEcho: true
+  JwtExpiry:
+    Type: String
+    NoEcho: true
+
 Globals:
   Function:
     Timeout: 3
@@ -13,7 +25,25 @@ Globals:
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
       LogFormat: JSON
+    Environment:
+      Variables:
+        MONGODB_URI: !Ref MongoDBUri
+        JWT_SECRET: !Ref JwtSecret
+        JWT_EXPIRES_IN: !Ref JwtExpiry     # non-secret values can be hardcoded directly, no Parameter needed
+
+
+
+
 Resources:
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: common-utils
+      ContentUri: src/layers/common/
+      CompatibleRuntimes:
+        - nodejs24.x
+      RetentionPolicy: Retain
+
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -28,6 +58,40 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+
+  RegisterUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/functions/auth/register/
+      Handler: index.registerUser
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      Events:
+        Register:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /register
+            Method: post
+      Layers:
+        - !Ref CommonLayer
+            
+  LogInUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/functions/auth/login/
+      Handler: index.logInUser
+      Runtime: nodejs24.x
+      Architectures:
+      - x86_64
+      Events:
+        LogIn:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /login
+            Method: post
+      Layers: 
+        - !Ref CommonLayer
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

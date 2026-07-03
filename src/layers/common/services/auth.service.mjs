@@ -2,11 +2,11 @@ import {
   createUser,
   findByEmail,
   registerUserRepository,
-} from "../repositories/auth.repository.mjs";
-import { ApiError } from "../utils/ApiError.mjs";
-import { hashPassword } from "../utils/hash.util.mjs";
-import { signToken } from "../utils/jwt.util.mjs";
-import { schema } from "../validators/auth.validator";
+} from "/opt/nodejs/repositories/auth.repository.mjs";
+import { ApiError } from "/opt/nodejs/utils/ApiError.mjs";
+import { hashPassword } from "/opt/nodejs/utils/hash.util.mjs";
+import { signToken } from "/opt/nodejs/utils/jwt.util.mjs";
+import { schema } from "/opt/nodejs/validators/auth.validator";
 
 const registerUserService = async (user) => {
   try {
@@ -54,4 +54,4 @@ const logInUserService = async (user) => {
   }
 };
 
-export { logInUserService };
+export { registerUserService, logInUserService };

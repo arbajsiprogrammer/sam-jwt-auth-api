@@ -1,5 +1,5 @@
-import { User } from "../models/user.model.mjs";
-import { ApiError } from "../utils/ApiError.mjs";
+import { User } from "/opt/nodejs/models/user.model.mjs";
+import { ApiError } from "/opt/nodejs/utils/ApiError.mjs";
 
 const createUser = async (userData) => {
   try {

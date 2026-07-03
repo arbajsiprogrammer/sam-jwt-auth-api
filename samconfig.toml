@@ -4,6 +4,7 @@ version = 0.1
 
 [default.global.parameters]
 stack_name = "02-sam-jwt-auth-api"
+region = "us-east-1"
 
 [default.build.parameters]
 cached = true
@@ -16,6 +17,9 @@ lint = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
+stack_name = "sam-jwt-auth-api"
+s3_prefix = "sam-jwt-auth-api"
+image_repositories = []
 
 [default.package.parameters]
 resolve_s3 = true
