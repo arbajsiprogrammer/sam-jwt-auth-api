@@ -10,17 +10,17 @@ Description: >
 Parameters:
   MongoDBUri:
     Type: String
-    NoEcho: true          # hides value in console/logs
+    # NoEcho: true          # hides value in console/logs
   JwtSecret:
     Type: String
-    NoEcho: true
+    # NoEcho: true
   JwtExpiry:
     Type: String
-    NoEcho: true
+    # NoEcho: true
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
     LoggingConfig:
@@ -28,8 +28,8 @@ Globals:
     Environment:
       Variables:
         MONGODB_URI: !Ref MongoDBUri
-        JWT_SECRET: !Ref JwtSecret
-        JWT_EXPIRES_IN: !Ref JwtExpiry     # non-secret values can be hardcoded directly, no Parameter needed
+        JWT_SECRET_KEY: !Ref JwtSecret
+        JWT_EXPIRES_IN: !Ref JwtExpiry     
 
 
 
@@ -60,10 +60,10 @@ Resources:
             Method: get
 
   RegisterUserFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/functions/auth/register/
-      Handler: index.registerUser
+      Handler: index.handler
       Runtime: nodejs24.x
       Architectures:
       - x86_64
@@ -80,7 +80,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/functions/auth/login/
-      Handler: index.logInUser
+      Handler: index.handler
       Runtime: nodejs24.x
       Architectures:
       - x86_64

@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const schema = Joi.object({
   fname: Joi.string().alphanum().min(3).max(30).required(),

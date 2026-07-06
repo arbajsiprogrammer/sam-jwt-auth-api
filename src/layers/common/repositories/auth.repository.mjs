@@ -1,23 +1,17 @@
-import { User } from "/opt/nodejs/models/user.model.mjs";
-import { ApiError } from "/opt/nodejs/utils/ApiError.mjs";
+import { User } from "/opt/models/user.model.mjs";
+import { ApiError } from "/opt/utils/ApiError.mjs";
 
 const createUser = async (userData) => {
-  try {
-    const response = await User.create(userData);
-    return response;
-  } catch (error) {
-    console.log(error);
-    throw new ApiError(500, error.message);
-  }
+  console.log("createUser");
+  const response = await User.create(userData);
+  return response;
 };
 
 const findByEmail = async (email) => {
-  try {
-    const response = await User.findOne({ email });
-    return response;
-  } catch (error) {
-    console.log(error);
-    throw new ApiError(500, error.message);
-  }
+  console.log("findByEmail");
+  const response = await User.findOne({ email });
+  console.log("findByEmail : ", response);
+  return response;
+  // return undefined;
 };
 export { createUser, findByEmail };

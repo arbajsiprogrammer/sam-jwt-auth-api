@@ -10,16 +10,16 @@ const successResponse = (statusCode, message, data) => {
   };
 };
 
-// const errorResponse = (statusCode, error) => {
-//   return {
-//     statusCode,
-//     body: JSON.stringify({
-//       success: false,
-//       statusCode: statusCode,
-//       message: error.message || error,
-//       data: null,
-//     }),
-//   };
-// };
+const errorResponse = (statusCode, error) => {
+  return {
+    statusCode,
+    body: JSON.stringify({
+      success: false,
+      statusCode: statusCode,
+      message: error.message || error,
+      data: null,
+    }),
+  };
+};
 
-export { successResponse };
+export { successResponse, errorResponse };

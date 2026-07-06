@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 
 const hashPassword = async (password) => {
-  const salt = bcrypt.genSalt();
-  const hashed = await bcrypt.hash(password, salt);
+  console.log("inside hashPassword", password);
+  const hashed = await bcrypt.hash(password, 10);
 
+  console.log("after inside hashPassword", hashed);
   return hashed;
 };
 

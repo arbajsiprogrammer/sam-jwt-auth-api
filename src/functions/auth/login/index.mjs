@@ -1,13 +1,19 @@
-import { logInUserService } from "../../../services/auth.service.mjs";
-import { successResponse } from "/opt/nodejs/utils/api.response.mjs";
-import { connectToMongoDB } from "/opt/nodejs/utils/db.util.mjs";
+import { lambdaHandler } from "/opt/utils/lambdaHandler.util.mjs";
+import { logInUserService } from "/opt/services/auth.service.mjs";
+import { successResponse } from "/opt/utils/api.response.mjs";
 
 const logInUser = async (event) => {
-  await connectToMongoDB();
-
-  const user = JSON.parse(event.body());
+  const user = JSON.parse(event.body);
 
   const token = await logInUserService(user);
 
-  return successResponse(200, "logIn successful", { AccessToken: token });
+  return await successResponse(200, "logIn successful", {
+    AccessToken: token,
+  });
 };
+
+const handler = async (event) => {
+  return await lambdaHandler(event, logInUser);
+};
+
+export { handler };

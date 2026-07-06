@@ -20,6 +20,7 @@ resolve_s3 = true
 stack_name = "sam-jwt-auth-api"
 s3_prefix = "sam-jwt-auth-api"
 image_repositories = []
+parameter_overrides = "MongoDBUri=\"mongodb+srv://arbajsiprogrammer_db_user:3pokSVWAUPc4PPEF@cluster0.m4sdpbz.mongodb.net/?appName=Cluster0\" JwtSecret=\"thisIsAlonglongSecreatKey_09876543211234567890_SetupByArbaj\" JwtExpiry=\"10M\""
 
 [default.package.parameters]
 resolve_s3 = true
